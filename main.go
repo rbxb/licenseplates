@@ -10,9 +10,11 @@ import (
 	"os"
 )
 
+const baseURL = "https://servicearizona.com/webapp/vehicle/plates/personalizedChoiceSearch.do?plateChoice=001&choice="
+const availableText = "Plate is available"
+const validchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
 func isAvailable(plate string) bool {
-	baseURL := "https://servicearizona.com/webapp/vehicle/plates/personalizedChoiceSearch.do?plateChoice=001&choice="
-	availableText := "Plate is available"
 	resp, err := http.Get(baseURL + plate)
 	if err != nil {
 		panic(err)
@@ -20,16 +22,12 @@ func isAvailable(plate string) bool {
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		panic(resp.Status)
 	}
-	b, err := ioutil.ReadAll(resp.Body)
+	b, _ := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
-	if strings.Index(string(b), availableText) > -1 {
-		return true
-	}
-	return false
+	return strings.Index(string(b), availableText) > -1
 }
 
 func main() {
-	validchars := "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	buff := bytes.NewBuffer(nil)
 
 	for _,f := range validchars {
