@@ -42,7 +42,7 @@ func main() {
 			}
 			buff.Write([]byte(plate + "\r\n"))
 			fmt.Println(plate)
-			time.Sleep(time.Millisecond * 100)
+			time.Sleep(time.Millisecond * 50)
 		}
 	}
 
